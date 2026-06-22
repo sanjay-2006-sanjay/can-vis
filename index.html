@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+  <title>3D Dashboard UI</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    body {
+      background: #e9e9e9;
+      font-family: Inter, sans-serif;
+      overflow-x: hidden;
+    }
+
+    .card-3d {
+      transform-style: preserve-3d;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+      background: #d4d4d4;
+      border-radius: 22px;
+      box-shadow:
+        12px 12px 24px rgba(0,0,0,0.12),
+        -8px -8px 20px rgba(255,255,255,0.7);
+    }
+
+    .card-3d:hover {
+      box-shadow:
+        18px 18px 32px rgba(0,0,0,0.15),
+        -10px -10px 24px rgba(255,255,255,0.8);
+    }
+
+    .hero-btn {
+      background: linear-gradient(145deg, #ffd500, #f0bc00);
+      border-radius: 9999px;
+      box-shadow:
+        0 12px 24px rgba(255, 193, 7, 0.35),
+        inset 0 2px 2px rgba(255,255,255,0.6);
+      transition: all 0.25s ease;
+    }
+
+    .hero-btn:active {
+      transform: scale(0.96);
+      box-shadow:
+        inset 0 6px 12px rgba(0,0,0,0.15);
+    }
+
+    .icon-btn {
+      transition: all 0.25s ease;
+    }
+
+    .icon-btn:hover {
+      transform: translateY(-8px) scale(1.1);
+      filter: drop-shadow(0 12px 12px rgba(255, 193, 7, 0.45));
+    }
+
+    .icon-btn:active {
+      transform: scale(0.92);
+    }
+
+    .bottom-bar {
+      backdrop-filter: blur(12px);
+      background: rgba(255,255,255,0.35);
+      box-shadow: 0 -8px 24px rgba(0,0,0,0.08);
+    }
+  </style>
+</head>
+
+<body class="min-h-screen p-4 md:p-8">
+
+  <div class="max-w-6xl mx-auto">
+
+    <!-- Top Button -->
+    <button
+      class="hero-btn w-full h-20 md:h-24 text-xl font-bold text-gray-800 mb-8">
+      Explore Dashboard
+    </button>
+
+    <!-- Grid Section -->
+    <div class="grid grid-cols-2 gap-6 md:gap-8">
+
+      <div class="card-3d h-52 md:h-72"></div>
+
+      <div class="card-3d h-40 md:h-56 mt-4"></div>
+
+      <div class="card-3d h-44 md:h-56"></div>
+
+      <div class="card-3d h-28 md:h-40 mt-6"></div>
+
+    </div>
+
+    <!-- Medium Card -->
+    <div class="card-3d h-40 md:h-56 w-3/4 mt-8"></div>
+
+    <!-- Full Width Card -->
+    <div class="card-3d h-24 md:h-36 w-full mt-10"></div>
+
+    <!-- Small Cards -->
+    <div class="grid grid-cols-3 gap-4 md:gap-10 mt-10">
+
+      <div class="card-3d aspect-square"></div>
+
+      <div class="card-3d aspect-square"></div>
+
+      <div class="card-3d aspect-square"></div>
+
+    </div>
+
+  </div>
+
+  <!-- Bottom Navigation -->
+  <div class="fixed bottom-0 left-0 right-0 bottom-bar py-5">
+
+    <div class="max-w-md mx-auto flex justify-around items-center">
+
+      <!-- Circle -->
+      <button class="icon-btn">
+        <div class="w-10 h-10 bg-yellow-400 rounded-full shadow-lg"></div>
+      </button>
+
+      <!-- Star -->
+      <button class="icon-btn text-5xl text-yellow-400">
+        ★
+      </button>
+
+      <!-- Square -->
+      <button class="icon-btn">
+        <div class="w-10 h-10 bg-yellow-400 rounded-md shadow-lg"></div>
+      </button>
+
+    </div>
+
+  </div>
+
+  <script>
+    const cards = document.querySelectorAll('.card-3d');
+
+    cards.forEach(card => {
+
+      card.addEventListener('mousemove', (e) => {
+
+        const rect = card.getBoundingClientRect();
+
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+
+        const rotateY = ((x / rect.width) - 0.5) * 18;
+        const rotateX = ((y / rect.height) - 0.5) * -18;
+
+        card.style.transform =
+          `perspective(1000px)
+           rotateX(${rotateX}deg)
+           rotateY(${rotateY}deg)
+           translateZ(15px)`;
+      });
+
+      card.addEventListener('mouseleave', () => {
+        card.style.transform =
+          'perspective(1000px) rotateX(0) rotateY(0)';
+      });
+
+      card.addEventListener('click', () => {
+
+        card.animate(
+          [
+            { transform: card.style.transform },
+            { transform: 'scale(0.96)' },
+            { transform: 'scale(1)' }
+          ],
+          {
+            duration: 250,
+            easing: 'ease-out'
+          }
+        );
+      });
+    });
+
+    document.querySelectorAll('button').forEach(btn => {
+
+      btn.addEventListener('click', () => {
+
+        btn.animate(
+          [
+            { transform: 'scale(1)' },
+            { transform: 'scale(0.94)' },
+            { transform: 'scale(1)' }
+          ],
+          {
+            duration: 200
+          }
+        );
+      });
+    });
+  </script>
+
+</body>
+</html>
